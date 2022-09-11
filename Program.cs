@@ -14,16 +14,18 @@ namespace csv
         static void Main(string[] args)
         {
             // Write sample data to CSV file
-            using (CsvFileWriter writer = new CsvFileWriter("WriteTest.csv"))
+            using (CsvFileWriter writer = new CsvFileWriter("EMPLOYEES.csv"))
             {
-                for (int i = 0; i < 100; i++)
+
+                for (int i = 0; i <5 ; i++)
                 {
                     CsvRow row = new CsvRow();
-                    for (int j = 0; j < 5; j++)
+                    for (int j = 0; j < 3; j++)
                         row.Add(String.Format("Column{0}", j));
                     writer.WriteRow(row);
                 }
             }
+            Console.ReadLine();
         }
     }
     /// </summary>
