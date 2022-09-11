@@ -2,6 +2,7 @@
 using CsvHelper;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,43 @@ namespace csv
 {
     class Program
     {
+
+        internal class User
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string Occupation { get; set; }
+        }
         static void Main(string[] args)
         {
+            var users = new List<User>
+            {
+                new User{FirstName="John",LastName= "Doe",Occupation= "gardener" },
+                new User { FirstName="Roger", LastName = "Roe", Occupation= "driver" }
+
+            };
+
+            var mem = new MemoryStream();
+            var writer1 = new StreamWriter(mem);
+            var csvWriter = new CsvWriter(writer1, CultureInfo.CurrentCulture);
+
+            csvWriter.WriteField("EmployeeID");
+            csvWriter.WriteField("ManagerID");
+            csvWriter.WriteField("Salary");
+            csvWriter.NextRecord();
+
+            foreach (var user in users)
+            {
+                csvWriter.WriteField(user.FirstName);
+                csvWriter.WriteField(user.LastName);
+                csvWriter.WriteField(user.Occupation);
+                csvWriter.NextRecord();
+            }
+
+            writer1.Flush();
+            var res = Encoding.UTF8.GetString(mem.ToArray());
+            Console.WriteLine(res);
+            Console.ReadLine();
             // Write sample data to CSV file
             using (CsvFileWriter writer = new CsvFileWriter("EMPLOYEES.csv"))
             {
